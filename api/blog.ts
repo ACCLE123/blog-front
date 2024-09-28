@@ -1,7 +1,7 @@
 // api/blog.ts
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/blogs';
+const API_URL = 'http://47.93.28.209:8080/blogs';
 
 export interface Blog {
     ID: number;
