@@ -1,26 +1,40 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Search } from 'lucide-react'
-
-// mock
-const blogPosts = [
-  { id: 1, title: "我的第一篇博客", createAt: "2023-09-27", content: "这是我的第一篇博客文章...", author: 'yangqi' },
-  { id: 2, title: "学习React的心得", createAt: "2023-09-28", content: "React真是一个强大的前端框架...", author: 'yangqi' },
-  { id: 3, title: "旅行日记：巴黎", createAt: "2023-09-29", content: "巴黎是一座充满魅力的城市...", author: 'yangqi' },
-]
+import { fetchBlogs, Blog } from '@/api/blog'
 
 export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [blogPosts, setBlogPosts] = useState<Blog[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getBlogs = async () => {
+      try {
+        const blogs = await fetchBlogs();
+        setBlogPosts(blogs);
+      } catch (error) {
+        console.error("Failed to fetch blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getBlogs();
+  }, []);
 
   const filteredPosts = blogPosts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.content.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+    post.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.Content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return <div className="text-center">加载中...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -28,14 +42,6 @@ export function Page() {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900">yangqi</h1>
-            {/* <nav>
-              <Button variant="ghost" asChild>
-                <Link href="/">首页</Link>
-              </Button>
-              <Button variant="ghost" asChild>
-                <Link href="/about">关于我</Link>
-              </Button>
-            </nav> */}
           </div>
           <div className="relative">
             <Input
@@ -53,14 +59,14 @@ export function Page() {
         <div className="px-4 py-6 sm:px-0">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((blog) => (
-              <Link href={`/blog/${blog.id}`} key={blog.id}>
+              <Link href={`/blog/${blog.ID}`} key={blog.ID}>
                 <Card>
                   <CardHeader>
-                    <CardTitle>{blog.title}</CardTitle>
-                    <CardDescription>{blog.createAt}</CardDescription>
+                    <CardTitle>{blog.Title}</CardTitle>
+                    <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription> {/* 格式化日期 */}
                   </CardHeader>
                   <CardContent>
-                    {blog.content}
+                    {blog.Content}
                   </CardContent>
                 </Card>
               </Link>
@@ -72,5 +78,5 @@ export function Page() {
         </div>
       </main>
     </div>
-  )
+  );
 }
