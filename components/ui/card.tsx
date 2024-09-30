@@ -1,5 +1,9 @@
+// card.tsx
 import * as React from "react"
 import ReactMarkdown from 'react-markdown';
+import 'highlight.js/styles/github.css';
+import rehypeHighlight from 'rehype-highlight'
+import rehypeRaw from 'rehype-raw';
 
 import { cn } from "@/lib/utils"
 
@@ -59,7 +63,7 @@ const CardContent = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => (
   <div ref={ref} className={cn("p-6 pt-0", className)} {...props}>
-    <ReactMarkdown>{children as string}</ReactMarkdown>
+    <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeHighlight]}>{children as string}</ReactMarkdown>
   </div>
 ));
 CardContent.displayName = "CardContent";

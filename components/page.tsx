@@ -1,3 +1,4 @@
+// page.tsx
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -35,7 +36,7 @@ export function Page() {
   if (loading) {
     return <div className="text-center">加载中...</div>;
   }
-
+  
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
@@ -65,9 +66,11 @@ export function Page() {
                     <CardTitle>{blog.Title}</CardTitle>
                     <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription> {/* 格式化日期 */}
                   </CardHeader>
-                  <CardContent>
-                    {blog.Content}
-                  </CardContent>
+                  <div >
+                    <CardContent className="line-clamp-5">
+                      {blog.Content.replace(/\\n/g, '\n')}
+                    </CardContent>
+                  </div>
                 </Card>
               </Link>
             ))}

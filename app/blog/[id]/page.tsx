@@ -28,6 +28,7 @@ export default function BlogPage({ params }: { params: { id: string } }) {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!blog) return <div>Blog not found</div>;
+  
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -37,7 +38,7 @@ export default function BlogPage({ params }: { params: { id: string } }) {
           <CardDescription>Published on {new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
         </CardHeader>
         <CardContent>
-          {blog.Content}
+          {blog.Content.replace(/\\n/g, '\n')}
         </CardContent>
         <CardFooter>
           <span>Written by {blog.Author}</span>
