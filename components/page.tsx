@@ -61,12 +61,12 @@ export function Page() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((blog) => (
               <Link href={`/blog/${blog.ID}`} key={blog.ID}>
-                <Card>
+                <Card className="min-h-[400px] max-h-[400px]">
                   <CardHeader>
                     <CardTitle>{blog.Title}</CardTitle>
                     <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription> {/* 格式化日期 */}
                   </CardHeader>
-                  <div >
+                  <div className="overflow-hidden">
                     <CardContent className="line-clamp-5">
                       {blog.Content.replace(/\\n/g, '\n')}
                     </CardContent>

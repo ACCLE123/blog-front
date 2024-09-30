@@ -62,8 +62,10 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6 pt-0", className)} {...props}>
-    <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeHighlight]}>{children as string}</ReactMarkdown>
+  <div ref={ref} className={cn("prose p-6 pt-0", className)} {...props}>
+    <ReactMarkdown rehypePlugins={[]}>
+      {children as string}
+    </ReactMarkdown>
   </div>
 ));
 CardContent.displayName = "CardContent";
