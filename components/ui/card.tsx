@@ -58,17 +58,25 @@ const CardDescription = React.forwardRef<
 ))
 CardDescription.displayName = "CardDescription"
 
+// const CardContent = React.forwardRef<
+//   HTMLDivElement,
+//   React.HTMLAttributes<HTMLDivElement>
+// >(({ className, children, ...props }, ref) => (
+//   <div ref={ref} className={cn("prose p-6 pt-0", className)} {...props}>
+//     <ReactMarkdown rehypePlugins={[]}>
+//       {children as string}
+//     </ReactMarkdown>
+//   </div>
+// ));
+// CardContent.displayName = "CardContent";
+
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => (
-  <div ref={ref} className={cn("prose p-6 pt-0", className)} {...props}>
-    <ReactMarkdown rehypePlugins={[]}>
-      {children as string}
-    </ReactMarkdown>
-  </div>
-));
-CardContent.displayName = "CardContent";
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+))
+CardContent.displayName = "CardContent"
 
 const CardFooter = React.forwardRef<
   HTMLDivElement,

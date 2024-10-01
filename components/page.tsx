@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Search } from 'lucide-react'
 import { fetchBlogs, Blog } from '@/api/blog'
+import { Button } from "@/components/ui/button"
+import ReactMarkdown from 'react-markdown';
 
 export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -43,7 +45,9 @@ export function Page() {
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900">yangqi</h1>
+            <Link href="/resume">简历</Link>
           </div>
+          
           <div className="relative">
             <Input
               type="text"
@@ -67,8 +71,10 @@ export function Page() {
                     <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription> {/* 格式化日期 */}
                   </CardHeader>
                   <div className="overflow-hidden">
-                    <CardContent className="line-clamp-5">
-                      {blog.Content.replace(/\\n/g, '\n')}
+                    <CardContent className="line-clamp-5 prose">
+                      <ReactMarkdown rehypePlugins={[]}>
+                        {blog.Content.replace(/\\n/g, '\n')}
+                      </ReactMarkdown>
                     </CardContent>
                   </div>
                 </Card>

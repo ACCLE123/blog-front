@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { fetchBlogByID, Blog } from '@/api/blog';
+import ReactMarkdown from 'react-markdown';
 
 export default function BlogPage({ params }: { params: { id: string } }) {
   const [blog, setBlog] = useState<Blog | null>(null);
@@ -31,14 +32,17 @@ export default function BlogPage({ params }: { params: { id: string } }) {
   
 
   return (
+    
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <Card>
         <CardHeader>
           <CardTitle>{blog.Title}</CardTitle>
           <CardDescription>Published on {new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
         </CardHeader>
-        <CardContent>
-          {blog.Content.replace(/\\n/g, '\n')}
+        <CardContent className="line-clamp-5 prose">
+          <ReactMarkdown rehypePlugins={[]}>
+            {blog.Content.replace(/\\n/g, '\n')}
+          </ReactMarkdown>
         </CardContent>
         <CardFooter>
           <span>Written by {blog.Author}</span>
