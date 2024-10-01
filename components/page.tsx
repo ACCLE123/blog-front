@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { Search } from 'lucide-react'
 import { fetchBlogs, Blog } from '@/api/blog'
-import { Button } from "@/components/ui/button"
 import ReactMarkdown from 'react-markdown';
 
 export function Page() {
@@ -68,10 +67,10 @@ export function Page() {
                 <Card className="min-h-[400px] max-h-[400px]">
                   <CardHeader>
                     <CardTitle>{blog.Title}</CardTitle>
-                    <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription> {/* 格式化日期 */}
+                    <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
                   </CardHeader>
                   <div className="overflow-hidden">
-                    <CardContent className="line-clamp-5 prose">
+                    <CardContent className="line-clamp-5 prose overflow-hidden max-h-[200px]">
                       <ReactMarkdown rehypePlugins={[]}>
                         {blog.Content.replace(/\\n/g, '\n')}
                       </ReactMarkdown>

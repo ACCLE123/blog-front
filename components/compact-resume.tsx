@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Mail, Phone, MapPin, Linkedin, Github, Briefcase, GraduationCap, Wrench } from "lucide-react"
+import { Mail, Phone, Github, Briefcase, GraduationCap, Wrench } from "lucide-react"
 
 export function CompactResume() {
   const [activeTab, setActiveTab] = useState('profile')

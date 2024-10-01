@@ -1,9 +1,6 @@
 // card.tsx
 import * as React from "react"
-import ReactMarkdown from 'react-markdown';
 import 'highlight.js/styles/github.css';
-import rehypeHighlight from 'rehype-highlight'
-import rehypeRaw from 'rehype-raw';
 
 import { cn } from "@/lib/utils"
 
