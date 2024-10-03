@@ -2,10 +2,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, easing } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { Search } from 'lucide-react'
 import { fetchBlogs, Blog } from '@/api/blog'
 import ReactMarkdown from 'react-markdown';
 
@@ -42,10 +41,10 @@ export function Page() {
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-4">
+          {/* <div className="flex justify-between items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900">yangqi</h1>
             <Link href="/resume">简历</Link>
-          </div>
+          </div> */}
           
           <div className="relative">
             <Input
@@ -53,9 +52,10 @@ export function Page() {
               placeholder="搜索文章..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10"
+              className="w-full pl-5"
+              whileFocus={{ scale: 1.02, transition: { duration: 0.3, ease: easing } }}
+              whileHover={{ scale: 1.01, transition: { duration: 0.2, ease: easing } }}
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           </div>
         </div>
       </header>
@@ -64,7 +64,16 @@ export function Page() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((blog) => (
               <Link href={`/blog/${blog.ID}`} key={blog.ID}>
-                <Card className="min-h-[400px] max-h-[400px]">
+                <Card className="min-h-[400px] max-h-[400px]" initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    duration: 0.6, 
+                    ease: easing, 
+                  }}
+                  whileFocus={{ scale: 1.02, transition: { duration: 0.3, ease: easing } }}
+                  whileHover={{ scale: 1.01, transition: { duration: 0.2, ease: easing } }}
+                  >
                   <CardHeader>
                     <CardTitle>{blog.Title}</CardTitle>
                     <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>

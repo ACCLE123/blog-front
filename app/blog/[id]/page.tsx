@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, easing } from '@/components/ui/card';
 import { fetchBlogByID, Blog } from '@/api/blog';
 import ReactMarkdown from 'react-markdown';
 
@@ -34,7 +34,13 @@ export default function BlogPage({ params }: { params: { id: string } }) {
   return (
     
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <Card>
+      <Card initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{
+          duration: 0.6, 
+          ease: easing, 
+        }}>
         <CardHeader>
           <CardTitle>{blog.Title}</CardTitle>
           <CardDescription>Published on {new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
