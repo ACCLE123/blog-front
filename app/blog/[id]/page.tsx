@@ -39,7 +39,7 @@ export default function BlogPage({ params }: { params: { id: string } }) {
           <CardTitle>{blog.Title}</CardTitle>
           <CardDescription>Published on {new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
         </CardHeader>
-        <CardContent className="line-clamp-5 prose">
+        <CardContent className="prose">
           <ReactMarkdown rehypePlugins={[]}>
             {blog.Content.replace(/\\n/g, '\n')}
           </ReactMarkdown>
