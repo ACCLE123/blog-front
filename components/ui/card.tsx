@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+
 import * as React from "react";
 import { motion } from "framer-motion"; // 引入 framer-motion
 import 'highlight.js/styles/github.css';
@@ -6,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const easing = [0.25, 0.1, 0.25, 1];
 
-const MotionCard = motion(
+const Card = motion(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
@@ -21,9 +23,8 @@ const MotionCard = motion(
     />
   ))
 );
-MotionCard.displayName = "MotionCard";
 
-const MotionCardHeader = motion(
+const CardHeader = motion(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
@@ -35,9 +36,8 @@ const MotionCardHeader = motion(
     />
   ))
 );
-MotionCardHeader.displayName = "MotionCardHeader";
 
-const MotionCardTitle = motion(
+const CardTitle = motion(
   React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLHeadingElement>
@@ -49,9 +49,8 @@ const MotionCardTitle = motion(
     />
   ))
 );
-MotionCardTitle.displayName = "MotionCardTitle";
 
-const MotionCardDescription = motion(
+const CardDescription = motion(
   React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement>
@@ -63,9 +62,8 @@ const MotionCardDescription = motion(
     />
   ))
 );
-MotionCardDescription.displayName = "MotionCardDescription";
 
-const MotionCardContent = motion(
+const CardContent = motion(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
@@ -73,9 +71,8 @@ const MotionCardContent = motion(
     <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
   ))
 );
-MotionCardContent.displayName = "MotionCardContent";
 
-const MotionCardFooter = motion(
+const CardFooter = motion(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
@@ -87,15 +84,13 @@ const MotionCardFooter = motion(
     />
   ))
 );
-MotionCardFooter.displayName = "MotionCardFooter";
 
-// 导出所有 motion 版本的 Card 组件
 export {
-  MotionCard as Card,
-  MotionCardHeader as CardHeader,
-  MotionCardFooter as CardFooter,
-  MotionCardTitle as CardTitle,
-  MotionCardDescription as CardDescription,
-  MotionCardContent as CardContent,
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
   easing
 };
