@@ -29,21 +29,23 @@ export default function BlogPage({ params }: { params: { id: string } }) {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!blog) return <div>Blog not found</div>;
-  
 
   return (
-    
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <Card initial={{ opacity: 0, scale: 0.95 }}
+      <Card
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{
-          duration: 0.6, 
-          ease: easing, 
-        }}>
+          duration: 0.6,
+          ease: easing,
+        }}
+      >
         <CardHeader>
           <CardTitle>{blog.Title}</CardTitle>
-          <CardDescription>Published on {new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
+          <CardDescription>
+            Published on {new Date(blog.CreatedAt).toLocaleDateString()}
+          </CardDescription>
         </CardHeader>
         <CardContent className="prose">
           <ReactMarkdown rehypePlugins={[]}>
@@ -51,7 +53,6 @@ export default function BlogPage({ params }: { params: { id: string } }) {
           </ReactMarkdown>
         </CardContent>
         <CardFooter>
-          <span>Written by {blog.Author}</span>
         </CardFooter>
       </Card>
     </div>
