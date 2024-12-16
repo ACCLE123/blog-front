@@ -33,3 +33,12 @@ export const fetchBlogByID = async (id: number): Promise<Blog> => {
         throw new Error(`Failed to fetch blog with ID ${id}`);
     }
 };
+
+export const addBlog = async (newBlog: Omit<Blog, 'ID' | 'ViewCount' | 'CreatedAt'>): Promise<void> => {
+    try {
+        await axios.post(API_URL, newBlog);
+    } catch (error) {
+        console.error("Error adding blog:", error);
+        throw new Error("Failed to add blog");
+    }
+};
