@@ -85,14 +85,25 @@ export function Page() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((blog) => (
               <Link href={`/blog/${blog.ID}`} key={blog.ID}>
-                <Card className="min-h-[400px] max-h-[400px]">
+                <Card className="min-h-[400px] max-h-[400px]" initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    duration: 0.6, 
+                    ease: easing, 
+                  }}
+                  whileFocus={{ scale: 1.02, transition: { duration: 0.3, ease: easing } }}
+                  whileHover={{ scale: 1.01, transition: { duration: 0.2, ease: easing } }}
+                  >
                   <CardHeader>
                     <CardTitle>{blog.Title}</CardTitle>
                     <CardDescription>{new Date(blog.CreatedAt).toLocaleDateString()}</CardDescription>
                   </CardHeader>
                   <div className="overflow-hidden">
                     <CardContent className="line-clamp-5 prose overflow-hidden max-h-[200px]">
-                      <ReactMarkdown>{blog.Content.replace(/\\n/g, '\n')}</ReactMarkdown>
+                      <ReactMarkdown rehypePlugins={[]}>
+                        {blog.Content.replace(/\\n/g, '\n')}
+                      </ReactMarkdown>
                     </CardContent>
                   </div>
                 </Card>
