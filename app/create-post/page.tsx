@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter, useSearchParams } from "next/navigation"
-import axios from 'axios'
 import { Blog, fetchBlogByID, updateOrAddBlog } from '@/api/blog'
 
 export default function CreatePost() {
@@ -14,8 +13,6 @@ export default function CreatePost() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter();
   const searchParams = useSearchParams(); 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const blogId = Number(searchParams.get('blogId'));
 
@@ -25,14 +22,15 @@ export default function CreatePost() {
         const response = await fetchBlogByID(blogId);
         setTitle(response.Title)
         setContent(response.Content)
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        alert('Failed to get blog!');
       }
     };
 
-    fetchBlog();
+    if (blogId !== 0) {
+      fetchBlog();
+    }
   }, [blogId])
 
   const handlePublish = async () => {

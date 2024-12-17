@@ -50,6 +50,7 @@ export default function BlogPage({ params }: { params: { id: string } }) {
         alert("Blog deleted successfully!");
         router.push('/');
       } catch (err) {
+        console.error(err);
         setError("Failed to delete the blog");
         alert("There was an error deleting the blog.");
       }
