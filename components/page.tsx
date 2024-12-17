@@ -8,6 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { fetchBlogs, Blog } from '@/api/blog'
 import ReactMarkdown from 'react-markdown'
+import Cookies from 'js-cookie' // 引入 Cookies 库
 
 export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,6 +19,13 @@ export function Page() {
   const router = useRouter()
 
   useEffect(() => {
+    // 读取 Cookie 中的 Token
+    const storedToken = Cookies.get('auth_token')
+    if (storedToken) {
+      // 如果存在 Token，则进行验证
+      validateToken(storedToken)
+    }
+
     const getBlogs = async () => {
       try {
         const blogs = await fetchBlogs()
@@ -32,10 +40,25 @@ export function Page() {
     getBlogs()
   }, [])
 
+  const validateToken = (token: string) => {
+    // 模拟 Token 验证逻辑（实际情况需要请求后端验证）
+    if (token === '20021221') {
+      setIsAuthenticated(true)
+      setToken(token)
+    } else {
+      Cookies.remove('auth_token')
+    }
+  }
+
   const handleTokenKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && token) {
-      // Simulate token validation
-      setIsAuthenticated(true)
+      // 模拟 Token 验证逻辑
+      if (token === '20021221') {
+        setIsAuthenticated(true)
+        Cookies.set('auth_token', token, { expires: 30 })
+      } else {
+        alert('无效的 Token')
+      }
     }
   }
 

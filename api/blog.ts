@@ -42,3 +42,21 @@ export const addBlog = async (newBlog: Omit<Blog, 'ID' | 'ViewCount' | 'CreatedA
         throw new Error("Failed to add blog");
     }
 };
+
+export const deleteBlogByID = async (id: number): Promise<void> => {
+    try {
+        await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        console.error(`Error deleting blog with ID ${id}:`, error);
+        throw new Error(`Failed to delete blog with ID ${id}`);
+    }
+};
+
+export const updateOrAddBlog = async (blog: Blog): Promise<void> => {
+    try {
+        await axios.post(`${API_URL}/updateOrAdd`, blog);
+    } catch (error) {
+        console.error("Error updating or adding blog:", error);
+        throw new Error("Failed to update or add blog");
+    }
+};

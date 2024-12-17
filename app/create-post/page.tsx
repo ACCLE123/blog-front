@@ -1,38 +1,65 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import axios from 'axios'
+import { Blog, fetchBlogByID, updateOrAddBlog } from '@/api/blog'
 
 export default function CreatePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams(); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const blogId = Number(searchParams.get('blogId'));
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const response = await fetchBlogByID(blogId);
+        setTitle(response.Title)
+        setContent(response.Content)
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [blogId])
 
   const handlePublish = async () => {
     if (!title.trim() || !content.trim()) {
       alert('标题和内容不能为空！')
       return
     }
-
+    
+    const blog: Blog = {
+      ID: blogId,
+      Title: title,
+      Content: content,
+      CreatedAt: new Date().toISOString(),
+      Category: 'Tech',
+      Tags: 'JavaScript, Programming',
+      ViewCount: 100,
+      Author: 'Liam',
+    };
+  
     setIsLoading(true)
     try {
-      await axios.post('http://47.93.28.209:8080/blogs', {
-        Title: title,
-        Content: content,
-        Category: 'General',
-        Tags: 'Default',
-        Author: 'Liam',
-      })
-      alert('发布成功！')
+      await updateOrAddBlog(blog);
+      alert('Blog updated or added successfully!');
       router.push('/')
     } catch (error) {
-      console.error('发布失败：', error)
-      alert('发布失败，请稍后重试！')
+      console.error(error);
+      alert('Failed to update or add blog!');
     } finally {
       setIsLoading(false)
     }

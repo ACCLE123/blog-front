@@ -31,7 +31,7 @@ const CardHeader = motion(
   >(({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
+      className={cn("flex flex-col space-y-1.5 p-6 w-full max-w-4xl mx-auto", className)}
       {...props}
     />
   ))
@@ -44,7 +44,7 @@ const CardTitle = motion(
   >(({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn("font-semibold leading-none tracking-tight", className)}
+      className={cn("font-semibold leading-none tracking-tight w-full max-w-4xl mx-auto", className)}
       {...props}
     />
   ))
@@ -57,7 +57,7 @@ const CardDescription = motion(
   >(({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-sm text-muted-foreground w-full max-w-4xl mx-auto", className)}
       {...props}
     />
   ))
@@ -68,7 +68,14 @@ const CardContent = motion(
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
   >(({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+    <div
+      ref={ref}
+      className={cn(
+        "p-6 pt-0 w-full max-w-4xl mx-auto", // 设置最大宽度，并使其居中
+        className
+      )}
+      {...props}
+    />
   ))
 );
 
