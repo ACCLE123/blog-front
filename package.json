@@ -16,6 +16,7 @@
     "@radix-ui/react-tabs": "^1.1.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "github:tailwindcss/typography",
+    "@uiw/react-md-editor": "^4.0.7",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -26,11 +27,14 @@
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
+    "react-simplemde-editor": "^5.2.0",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-highlight": "^7.0.0",
     "rehype-raw": "^7.0.0",
+    "simplemde": "^1.11.2",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vditor": "^3.11.1"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

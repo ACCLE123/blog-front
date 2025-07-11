@@ -82,7 +82,7 @@ export function Page() {
                 placeholder="输入 Token..."
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
-                onKeyPress={handleTokenKeyPress}
+                onKeyDown={handleTokenKeyPress}
                 className="w-full sm:w-1/4 pl-5"
               />
             ) : (

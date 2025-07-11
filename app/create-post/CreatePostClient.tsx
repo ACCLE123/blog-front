@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Blog, fetchBlogByID, updateOrAddBlog } from '@/api/blog'
+import { Blog, fetchBlogByID, updateOrAddBlog, uploadImageToOSS } from '@/api/blog'
+import ReactMarkdown from 'react-markdown'
 
 export default function CreatePostClient() {
   const [title, setTitle] = useState('')
@@ -63,6 +64,43 @@ export default function CreatePostClient() {
     }
   }
 
+  // 粘贴图片上传并插入 markdown
+  const handlePaste = async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          try {
+            const url = await uploadImageToOSS(file);
+            const markdown = `![image](${url})`;
+            insertAtCursor(markdown);
+          } catch (err) {
+            alert('图片上传失败');
+          }
+          e.preventDefault();
+          break;
+        }
+      }
+    }
+  };
+
+  // 在光标处插入文本
+  const insertAtCursor = (text: string) => {
+    const textarea = document.activeElement as HTMLTextAreaElement;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = content.slice(0, start);
+    const after = content.slice(end);
+    setContent(before + text + after);
+    setTimeout(() => {
+      textarea.selectionStart = textarea.selectionEnd = start + text.length;
+      textarea.focus();
+    }, 0);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 ">
       <div className="w-full max-w-6xl bg-white shadow-md rounded-md p-6 space-y-8">
@@ -77,8 +115,14 @@ export default function CreatePostClient() {
           placeholder="输入内容..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          onPaste={handlePaste}
           className="w-full h-96 border rounded-md p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <div className="mt-8">
+          <div className="prose p-4 rounded min-h-[100px]">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
+        </div>
         <Button onClick={handlePublish} disabled={isLoading} className="w-full">
           {isLoading ? '发布中...' : '发布'}
         </Button>

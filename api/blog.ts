@@ -1,7 +1,7 @@
 // api/blog.ts
 import axios from 'axios';
 
-const API_URL = 'http://47.93.28.209:8080/blogs';
+const API_URL = 'http://localhost:8080/blogs';
 
 export interface Blog {
     ID: number;
@@ -58,5 +58,22 @@ export const updateOrAddBlog = async (blog: Blog): Promise<void> => {
     } catch (error) {
         console.error("Error updating or adding blog:", error);
         throw new Error("Failed to update or add blog");
+    }
+};
+
+// 上传图片到 OSS
+export const uploadImageToOSS = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+        const response = await axios.post<{ url: string }>('http://localhost:8080/upload/image', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data.url;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw new Error('Failed to upload image');
     }
 };
