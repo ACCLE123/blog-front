@@ -76,7 +76,8 @@ export default function CreatePostClient() {
             const url = await uploadImageToOSS(file);
             const markdown = `![image](${url})`;
             insertAtCursor(markdown);
-          } catch (err) {
+          } catch (error) {
+            console.error(error);
             alert('图片上传失败');
           }
           e.preventDefault();

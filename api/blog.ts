@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 const API_URL = 'http://47.93.28.209:8080/blogs';
+const IMAGE_URL = 'http://47.93.28.209:8080/upload/image';
 
 export interface Blog {
     ID: number;
@@ -66,7 +67,7 @@ export const uploadImageToOSS = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('image', file);
     try {
-        const response = await axios.post<{ url: string }>('http://localhost:8080/upload/image', formData, {
+        const response = await axios.post<{ url: string }>(IMAGE_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
