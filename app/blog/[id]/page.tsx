@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, easing } from '@/components/ui/card';
+import { Card, easing } from '@/components/ui/card';
 import { fetchBlogByID, Blog, deleteBlogByID } from '@/api/blog';
 import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/navigation';
