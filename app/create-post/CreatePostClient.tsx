@@ -133,36 +133,44 @@ export default function CreatePostClient() {
     <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#050505] text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-hidden">
       {/* 顶部导航栏 */}
       <header className="bg-white/80 dark:bg-[#050505]/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
-        <div className="max-w-[1600px] mx-auto py-3 px-6 flex items-center gap-8">
-          <Button 
-            onClick={() => router.push('/')}
-            variant="ghost" 
-            className="p-0 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-transparent transition-colors flex items-center gap-2 font-medium shrink-0"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            返回
-          </Button>
+        <div className="max-w-[1400px] mx-auto py-3 px-8 flex items-center gap-12">
+          {/* 左侧：返回 */}
+          <div className="flex items-center gap-6 shrink-0">
+            <button 
+              onClick={() => router.push('/')}
+              className="group flex items-center gap-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-xs font-black uppercase tracking-widest hidden sm:block">Exit</span>
+            </button>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 hidden md:block">
+              {blogId !== 0 ? 'Edit Mode' : 'New Creation'}
+            </span>
+          </div>
 
+          {/* 中间：标题输入框 */}
           <div className="flex-1 flex justify-center">
             <input
               type="text"
               placeholder="在这里输入文章标题..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full max-w-2xl text-center text-lg font-bold bg-transparent border-none outline-none placeholder:text-slate-300 dark:placeholder:text-slate-700 text-slate-900 dark:text-white"
+              className="w-full max-w-2xl text-center text-lg font-black tracking-tight bg-transparent border-none outline-none placeholder:text-slate-200 dark:placeholder:text-slate-800 text-slate-900 dark:text-white"
             />
           </div>
 
-          <div className="flex items-center gap-4 shrink-0">
+          {/* 右侧：动作 */}
+          <div className="flex items-center gap-6 shrink-0">
             <ThemeToggle />
             <Button 
               onClick={handlePublish} 
               disabled={isLoading} 
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-full px-6 py-2 h-auto text-sm font-bold shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-95"
+              className="bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-blue-600 dark:hover:bg-blue-400 text-white h-10 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-300 shadow-xl shadow-slate-200 dark:shadow-none active:scale-95"
             >
-              {isLoading ? '...' : (blogId !== 0 ? '保存' : '发布')}
+              {isLoading ? '...' : (blogId !== 0 ? 'Save' : 'Publish')}
             </Button>
           </div>
         </div>

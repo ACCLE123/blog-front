@@ -83,26 +83,44 @@ export function Page() {
   return (
     <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#050505] text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <header className="bg-white/80 dark:bg-[#050505]/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto py-6 px-6">
-          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6 items-center">
-            <div className="flex items-center justify-between w-full sm:w-auto">
-              <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mr-4">Liam's Blog</h1>
-              <div className="sm:hidden">
-                <ThemeToggle />
-              </div>
+        <div className="max-w-[1400px] mx-auto py-5 px-8 flex items-center justify-between gap-12">
+          {/* 左侧：品牌标识 */}
+          <div className="flex items-center gap-6 shrink-0">
+            <h1 className="text-xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">Liam's Blog</h1>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
+            <p className="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Curated Thoughts</p>
+          </div>
+
+          {/* 中间：搜索框 - 占据剩余空间 */}
+          <div className="flex-1 max-w-2xl relative hidden sm:block">
+            <Input
+              type="text"
+              placeholder="探索文章内容..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 h-11 bg-slate-50/50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-800 focus:bg-white dark:focus:bg-slate-900 focus:ring-4 focus:ring-blue-500/5 rounded-2xl transition-all duration-500 text-sm"
+            />
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </div>
+          </div>
+
+          {/* 右侧：动作与开关 */}
+          <div className="flex items-center gap-6 shrink-0">
             {!isAuthenticated ? (
-              <div className="relative">
+              <div className="relative group hidden lg:block">
                 <Input
                   type="text"
-                  placeholder="输入 Token..."
+                  placeholder="Token"
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   onKeyDown={handleTokenKeyPress}
-                  className="w-full sm:w-64 pl-4 pr-10 py-2 bg-slate-100 dark:bg-slate-900 border-transparent focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 rounded-full transition-all duration-300"
+                  className="w-32 h-11 pl-4 pr-10 bg-transparent border-slate-200 dark:border-slate-800 focus:w-48 rounded-2xl transition-all duration-500 text-xs font-medium"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -110,31 +128,12 @@ export function Page() {
             ) : (
               <Button
                 onClick={() => router.push('/create-post')}
-                className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-medium transition-all duration-300"
+                className="bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-blue-600 dark:hover:bg-blue-400 text-white h-11 px-6 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-xl shadow-slate-200 dark:shadow-none"
               >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-                写文章
+                New Post
               </Button>
             )}
-            <div className="relative flex-1 w-full sm:w-auto">
-              <Input
-                type="text"
-                placeholder="搜索文章..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border-transparent focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 rounded-full transition-all duration-300"
-              />
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-            </div>
-            <div className="hidden sm:block">
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </div>
         </div>
       </header>

@@ -154,23 +154,40 @@ export default function BlogPage({ params }: { params: { id: string } }) {
           style={{ scaleX }}
         />
         
-        <div className="max-w-3xl mx-auto py-4 px-6 flex items-center justify-between">
-          <Button 
-            onClick={() => router.push('/')}
-            variant="ghost" 
-            className="p-0 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-transparent transition-colors flex items-center gap-2 font-medium"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            返回首页
-          </Button>
+        <div className="max-w-[1400px] mx-auto py-5 px-8 flex items-center justify-between gap-12">
+          {/* 左侧：品牌标识 & 返回 */}
+          <div className="flex items-center gap-6 shrink-0">
+            <button 
+              onClick={() => router.push('/')}
+              className="group flex items-center gap-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            >
+              <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="text-xs font-black uppercase tracking-widest hidden sm:block">Back</span>
+            </button>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
+            <h1 className="text-lg font-black tracking-tighter text-slate-900 dark:text-white uppercase hidden sm:block">Liam's Blog</h1>
+          </div>
 
-          <div className="flex items-center gap-4">
+          {/* 右侧：动作与开关 */}
+          <div className="flex items-center gap-6 shrink-0">
             {isAuthenticated && (
-              <div className="flex items-center gap-3">
-                <Button onClick={handleEdit} variant="ghost" className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 font-medium text-sm">编辑</Button>
-                <Button onClick={handleDelete} variant="ghost" className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400 font-medium text-sm">删除</Button>
+              <div className="flex items-center gap-4 border-r border-slate-100 dark:border-slate-800 pr-6 mr-0">
+                <Button 
+                  onClick={handleEdit} 
+                  variant="ghost" 
+                  className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  Edit
+                </Button>
+                <Button 
+                  onClick={handleDelete} 
+                  variant="ghost" 
+                  className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                >
+                  Delete
+                </Button>
               </div>
             )}
             <ThemeToggle />
