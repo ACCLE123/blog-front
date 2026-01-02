@@ -23,16 +23,14 @@ export default function CreatePostClient() {
     if (!vditorContainerRef.current) return;
 
     const vditorInstance = new Vditor(vditorContainerRef.current, {
-      height: 'calc(100vh - 120px)',
+      height: 'calc(100vh - 64px)',
       mode: 'ir', // 即时渲染模式 (Typora 模式)
+      toolbar: [], // 彻底隐藏工具栏
       theme: document.documentElement.classList.contains('dark') ? 'dark' : 'classic',
       placeholder: '开始创作你的故事...',
       outline: {
         enable: true,
         position: 'left',
-      },
-      toolbarConfig: {
-        pin: true,
       },
       cache: {
         enable: false,
@@ -81,10 +79,23 @@ export default function CreatePostClient() {
 
   // 监听主题变化更新 Vditor 主题
   useEffect(() => {
-    if (vditor) {
+    if (!vditor) return;
+
+    // 创建观察器监听 html 标签的 class 变化
+    const observer = new MutationObserver(() => {
       const isDark = document.documentElement.classList.contains('dark');
-      vditor.setTheme(isDark ? 'dark' : 'classic', isDark ? 'dark' : 'light');
-    }
+      vditor.setTheme(
+        isDark ? 'dark' : 'classic', 
+        isDark ? 'dark' : 'light'
+      );
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    return () => observer.disconnect();
   }, [vditor]);
 
   const handlePublish = async () => {
@@ -157,9 +168,9 @@ export default function CreatePostClient() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto p-4 h-[calc(100vh-64px)] overflow-hidden">
+      <main className="max-w-full mx-auto h-[calc(100vh-64px)] overflow-hidden bg-[#f8fafc] dark:bg-[#080808]">
         {/* Vditor 容器 */}
-        <div ref={vditorContainerRef} className="vditor-container rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden" />
+        <div ref={vditorContainerRef} className="vditor-container h-full overflow-hidden" />
       </main>
 
       <style jsx global>{`
@@ -168,29 +179,38 @@ export default function CreatePostClient() {
           background-color: transparent !important;
         }
         .vditor-toolbar {
-          background-color: transparent !important;
-          border-bottom: 1px solid #f1f5f9 !important;
-          padding: 8px 16px !important;
-        }
-        .dark .vditor-toolbar {
-          border-bottom: 1px solid #1e293b !important;
+          display: none !important;
         }
         .vditor-content {
           background-color: transparent !important;
         }
+        /* 核心修复：更宽大的编辑区域 */
         .vditor-ir {
-          padding: 40px !important;
-          max-width: 900px !important;
+          padding: 80px 100px !important; /* 进一步增加内边距提升极致沉浸感 */
+          max-width: 1200px !important; 
           margin: 0 auto !important;
           background-color: #ffffff !important;
-          box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-          border-radius: 12px !important;
-          min-height: calc(100vh - 160px) !important;
+          color: #1e293b !important;
+          box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+          border-radius: 16px !important;
+          min-height: calc(100vh - 100px) !important; 
+          font-size: 18px !important; 
+          line-height: 2 !important; /* 增加行高到 2，让文字更具呼吸感 */
         }
         .dark .vditor-ir {
           background-color: #0a0a0a !important;
+          color: #f1f5f9 !important;
           box-shadow: none !important;
           border: 1px solid #1e293b !important;
+        }
+        /* 确保有序列表和无序列表的样式 */
+        .vditor-reset ol {
+          list-style-type: decimal !important;
+          padding-left: 20px !important;
+        }
+        .vditor-reset ul {
+          list-style-type: disc !important;
+          padding-left: 20px !important;
         }
         .vditor-toolbar__item button {
           color: #64748b !important;
