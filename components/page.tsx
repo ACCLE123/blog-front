@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { fetchBlogs, Blog } from '@/api/blog'
 import ReactMarkdown from 'react-markdown'
 import Cookies from 'js-cookie' // 引入 Cookies 库
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export function Page() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -67,15 +68,29 @@ export function Page() {
     post.Content.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  // 辅助函数：提取纯文本预览
+  const getPreviewText = (markdown: string) => {
+    return markdown
+      .replace(/[#*`_~[\]()]/g, '') // 移除大部分 Markdown 符号
+      .replace(/\\n/g, ' ')
+      .substring(0, 160) + '...';
+  }
+
   if (loading) {
     return <div className="text-center">加载中...</div>
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <header className="bg-black/50 backdrop-blur-xl border-b border-gray-800/50 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto py-8 px-6">
-          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
+    <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#050505] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      <header className="bg-white/80 dark:bg-[#050505]/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+        <div className="max-w-3xl mx-auto py-6 px-6">
+          <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6 items-center">
+            <div className="flex items-center justify-between w-full sm:w-auto">
+              <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white mr-4">Liam's Blog</h1>
+              <div className="sm:hidden">
+                <ThemeToggle />
+              </div>
+            </div>
             {!isAuthenticated ? (
               <div className="relative">
                 <Input
@@ -84,10 +99,10 @@ export function Page() {
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   onKeyDown={handleTokenKeyPress}
-                  className="w-full sm:w-72 pl-4 pr-12 py-3 bg-gray-900/50 border-gray-700/50 text-white placeholder-gray-500 focus:ring-cyan-500 focus:border-cyan-500 rounded-lg backdrop-blur-sm transition-all duration-300"
+                  className="w-full sm:w-64 pl-4 pr-10 py-2 bg-slate-100 dark:bg-slate-900 border-transparent focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 rounded-full transition-all duration-300"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
@@ -95,104 +110,51 @@ export function Page() {
             ) : (
               <Button
                 onClick={() => router.push('/create-post')}
-                className="w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300"
+                className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-6 py-2 rounded-full font-medium transition-all duration-300"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                发布帖子
+                写文章
               </Button>
             )}
-            <div className="relative flex-1">
+            <div className="relative flex-1 w-full sm:w-auto">
               <Input
                 type="text"
                 placeholder="搜索文章..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-gray-900/50 border-gray-700/50 text-white placeholder-gray-500 focus:ring-cyan-500 focus:border-cyan-500 rounded-lg backdrop-blur-sm transition-all duration-300"
+                className="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border-transparent focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 rounded-full transition-all duration-300"
               />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
+            </div>
+            <div className="hidden sm:block">
+              <ThemeToggle />
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto py-12 px-6">
-        <div style={{ gap: '80px' }} className="flex flex-col">
+      <main className="max-w-4xl mx-auto py-24 px-6">
+        <div className="flex flex-col space-y-16">
           {filteredPosts.map((blog, index) => (
             <Link href={`/blog/${blog.ID}`} key={blog.ID}>
-              <Card 
-                className="w-full bg-gray-900/30 backdrop-blur-sm border border-gray-800/50 hover:bg-gray-900/50 hover:border-cyan-500/30 transition-all duration-500 group cursor-pointer relative overflow-hidden"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.1,
-                  ease: easing,
-                }}
-                whileHover={{ 
-                  y: -8,
-                  transition: { duration: 0.3, ease: easing }
-                }}
-              >
-                {/* 科技感装饰线 */}
-                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="p-10 relative">
-                  <div className="flex items-start justify-between mb-8">
-                    <div className="flex-1">
-                      <h2 className="text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-300 mb-4 tracking-tight">
-                        {blog.Title}
-                      </h2>
-                      <div className="flex items-center text-sm text-gray-500 mb-6">
-                        <div className="w-4 h-4 mr-3 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                          <svg className="w-2.5 h-2.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                        {new Date(blog.CreatedAt).toLocaleDateString('zh-CN', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </div>
-                    </div>
-                    <div className="ml-6 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
-                      <div className="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                                     <div className="prose prose-invert max-w-none">
-                     <div className="text-gray-400 leading-relaxed text-base max-h-[300px] overflow-hidden">
-                      <ReactMarkdown 
-                        rehypePlugins={[]}
-                        components={{
-                          pre: ({ children }) => (
-                            <pre className="max-h-[60px] overflow-hidden text-xs bg-gray-800/50 p-3 rounded-lg border border-gray-700/50">
-                              {children}
-                            </pre>
-                          ),
-                          code: ({ children }) => (
-                            <code className="bg-gray-800/50 px-2 py-1 rounded-md text-xs border border-gray-700/50">
-                              {children}
-                            </code>
-                          )
-                        }}
-                      >
-                        {blog.Content.replace(/\\n/g, '\n')}
-                      </ReactMarkdown>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              <div className="group cursor-pointer relative py-20 md:py-32 px-10 md:px-20 rounded-[64px] border border-slate-100 dark:border-slate-900/50 hover:border-slate-200 dark:hover:border-slate-800 hover:bg-white dark:hover:bg-slate-900/30 transition-all duration-700 text-center">
+                <time className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-8 block">
+                  {new Date(blog.CreatedAt).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 tracking-tighter leading-tight">
+                  {blog.Title}
+                </h2>
+              </div>
             </Link>
           ))}
         </div>
@@ -209,6 +171,26 @@ export function Page() {
           </div>
         )}
       </main>
+
+      <footer className="max-w-4xl mx-auto py-16 px-6 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-slate-900 dark:bg-slate-100 flex items-center justify-center text-white dark:text-slate-900 font-bold text-sm">
+              Y
+            </div>
+            <div className="text-left">
+              <p className="text-sm font-bold text-slate-900 dark:text-white">Liam Yang</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">分享技术与思考</p>
+            </div>
+          </div>
+          <a 
+            href="mailto:yangqi2568@gmail.com" 
+            className="text-sm text-slate-400 hover:text-blue-500 transition-colors"
+          >
+            yangqi2568@gmail.com
+          </a>
+        </div>
+      </footer>
     </div>
   )
 }
