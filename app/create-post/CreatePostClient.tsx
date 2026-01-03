@@ -22,11 +22,17 @@ export default function CreatePostClient() {
   useEffect(() => {
     if (!vditorContainerRef.current) return;
 
+    const isDark = document.documentElement.classList.contains('dark');
     const vditorInstance = new Vditor(vditorContainerRef.current, {
       height: 'calc(100vh - 64px)',
       mode: 'ir', // 即时渲染模式 (Typora 模式)
       toolbar: [], // 彻底隐藏工具栏
-      theme: document.documentElement.classList.contains('dark') ? 'dark' : 'classic',
+      theme: isDark ? 'dark' : 'classic',
+      preview: {
+        theme: {
+          current: isDark ? 'dark' : 'light',
+        }
+      },
       placeholder: '开始创作你的故事...',
       outline: {
         enable: true,
@@ -36,6 +42,13 @@ export default function CreatePostClient() {
         enable: false,
       },
       after: () => {
+        // 强制在初始化后再次确认主题，防止初次进入时的渲染延迟
+        vditorInstance.setTheme(
+          isDark ? 'dark' : 'classic', 
+          isDark ? 'dark' : 'light',
+          isDark ? 'dark' : 'light'
+        );
+        
         // 如果是编辑模式，初始化内容
         if (blogId !== 0) {
           fetchBlogByID(blogId).then(blog => {
@@ -86,6 +99,7 @@ export default function CreatePostClient() {
       const isDark = document.documentElement.classList.contains('dark');
       vditor.setTheme(
         isDark ? 'dark' : 'classic', 
+        isDark ? 'dark' : 'light',
         isDark ? 'dark' : 'light'
       );
     });
@@ -158,7 +172,7 @@ export default function CreatePostClient() {
               placeholder="在这里输入文章标题..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full max-w-2xl text-center text-lg font-black tracking-tight bg-transparent border-none outline-none placeholder:text-slate-200 dark:placeholder:text-slate-800 text-slate-900 dark:text-white"
+              className="w-full max-w-2xl text-center text-lg font-black tracking-tight bg-transparent border-none outline-none placeholder:text-slate-300 dark:placeholder:text-slate-700 text-slate-900 dark:text-white"
             />
           </div>
 
@@ -205,11 +219,16 @@ export default function CreatePostClient() {
           font-size: 18px !important; 
           line-height: 2 !important; /* 增加行高到 2，让文字更具呼吸感 */
         }
-        .dark .vditor-ir {
+        .dark .vditor-ir,
+        .dark .vditor-ir .vditor-reset {
           background-color: #0a0a0a !important;
           color: #f1f5f9 !important;
           box-shadow: none !important;
           border: 1px solid #1e293b !important;
+        }
+        /* 修复 placeholder 在深夜模式下的颜色 */
+        .dark .vditor-ir .vditor-reset:empty::before {
+          color: #475569 !important;
         }
         /* 确保有序列表和无序列表的样式 */
         .vditor-reset ol {

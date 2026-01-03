@@ -87,8 +87,6 @@ export function Page() {
           {/* 左侧：品牌标识 */}
           <div className="flex items-center gap-6 shrink-0">
             <h1 className="text-xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">Liam's Blog</h1>
-            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
-            <p className="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Curated Thoughts</p>
           </div>
 
           {/* 中间：搜索框 - 占据剩余空间 */}
