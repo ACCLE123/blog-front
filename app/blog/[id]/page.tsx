@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react';
-import { Card, easing } from '@/components/ui/card';
+import { useEffect, useState } from 'react';
 import { fetchBlogByID, Blog, deleteBlogByID } from '@/api/blog';
 import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/navigation';
@@ -55,10 +54,11 @@ export default function BlogPage({ params }: { params: { id: string } }) {
   });
 
   // 递归提取 React 节点中的纯文本
-  const getRawText = (node: any): string => {
+  const getRawText = (node: React.ReactNode): string => {
     if (typeof node === 'string') return node;
     if (typeof node === 'number') return String(node);
     if (Array.isArray(node)) return node.map(getRawText).join('');
+    // @ts-expect-error - node could be a ReactElement with children
     if (node?.props?.children) return getRawText(node.props.children);
     return '';
   };
@@ -167,7 +167,7 @@ export default function BlogPage({ params }: { params: { id: string } }) {
               <span className="text-xs font-black uppercase tracking-widest hidden sm:block">Back</span>
             </button>
             <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
-            <h1 className="text-lg font-black tracking-tighter text-slate-900 dark:text-white uppercase hidden sm:block">Liam's Blog</h1>
+            <h1 className="text-lg font-black tracking-tighter text-slate-900 dark:text-white uppercase hidden sm:block">Liam&apos;s Blog</h1>
           </div>
 
           {/* 右侧：动作与开关 */}

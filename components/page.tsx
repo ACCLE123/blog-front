@@ -1,13 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Card, easing } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { fetchBlogs, Blog } from '@/api/blog'
-import ReactMarkdown from 'react-markdown'
 import Cookies from 'js-cookie' // 引入 Cookies 库
 import { ThemeToggle } from '@/components/theme-toggle'
 
@@ -68,14 +66,6 @@ export function Page() {
     post.Content.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  // 辅助函数：提取纯文本预览
-  const getPreviewText = (markdown: string) => {
-    return markdown
-      .replace(/[#*`_~[\]()]/g, '') // 移除大部分 Markdown 符号
-      .replace(/\\n/g, ' ')
-      .substring(0, 160) + '...';
-  }
-
   if (loading) {
     return <div className="text-center">加载中...</div>
   }
@@ -86,7 +76,9 @@ export function Page() {
         <div className="max-w-[1400px] mx-auto py-5 px-8 flex items-center justify-between gap-12">
           {/* 左侧：品牌标识 */}
           <div className="flex items-center gap-6 shrink-0">
-            <h1 className="text-xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">Liam's Blog</h1>
+            <h1 className="text-xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">Liam&apos;s Blog</h1>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block" />
+            <p className="hidden md:block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Curated Thoughts</p>
           </div>
 
           {/* 中间：搜索框 - 占据剩余空间 */}
@@ -138,7 +130,7 @@ export function Page() {
 
       <main className="max-w-4xl mx-auto py-24 px-6">
         <div className="flex flex-col space-y-16">
-          {filteredPosts.map((blog, index) => (
+          {filteredPosts.map((blog) => (
             <Link href={`/blog/${blog.ID}`} key={blog.ID}>
               <div className="group cursor-pointer relative py-20 md:py-32 px-10 md:px-20 rounded-[64px] border border-slate-100 dark:border-slate-900/50 hover:border-slate-200 dark:hover:border-slate-800 hover:bg-white dark:hover:bg-slate-900/30 transition-all duration-700 text-center">
                 <time className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-8 block">

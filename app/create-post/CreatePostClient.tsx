@@ -62,6 +62,7 @@ export default function CreatePostClient() {
         setContent(value);
       },
       upload: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         handler: async (files: File[]): Promise<any> => {
           const file = files[0];
           try {
@@ -88,7 +89,7 @@ export default function CreatePostClient() {
         }
       }
     };
-  }, []);
+  }, [blogId]);
 
   // 监听主题变化更新 Vditor 主题
   useEffect(() => {
